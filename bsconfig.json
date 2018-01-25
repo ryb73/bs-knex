@@ -1,0 +1,13 @@
+{
+    "name" : "bs-knex",
+    "namespace": true,
+    "sources" : [
+        { "dir" : "src" },
+        {
+            "dir": "test",
+            "type": "dev"
+        }
+    ],
+    "refmt": 3,
+    "bsc-flags": [ "-w -10", "-bs-super-errors" ]
+}
