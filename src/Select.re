@@ -1,5 +1,5 @@
 type _t;
-type t = Core.builder(_t, Whereable.t);
+type t = Whereable.t(_t);
 
 [@bs.send] external make : Core.t => t = "select";
 
