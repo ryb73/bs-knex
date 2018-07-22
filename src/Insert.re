@@ -1,9 +1,28 @@
 type _any;
 external _any : _ => _any = "%identity";
 
-type t = Js.Dict.t(_any);
+type t = {
+    internalInsert: Core.t,
+    pendingSets: Js.Dict.t(_any)
+};
 
-[@bs.send.pipe: Core.t] external _make : Js.Dict.t(_) => t = "insert";
-let make = () : t => Js.Dict.empty();
+let make = (knex) => {
+    internalInsert: knex,
+    pendingSets: Js.Dict.empty()
+};
 
-[@bs.send.pipe: t] external into : string => t = "";
+let set = (column, value, { pendingSets } as i) => {
+    Js.Dict.set(pendingSets, column, _any(value));
+    { ...i, pendingSets };
+};
+
+[@bs.send.pipe: Core.t] external _insert : Js.Dict.t(_) => Core.t = "insert";
+[@bs.send.pipe: Core.t] external _toString : unit => string = "toString";
+let toString = ({ internalInsert, pendingSets }) =>
+    internalInsert
+        |> _insert(pendingSets)
+        |> _toString();
+
+[@bs.send.pipe: Core.t] external _into : string => Core.t = "into";
+let into = (table, { internalInsert } as i) =>
+    { ...i, internalInsert: _into(table, internalInsert) };

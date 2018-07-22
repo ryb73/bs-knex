@@ -1,25 +1,62 @@
-type t('builder);
-
-[@bs.send.pipe: t('builder)]
-external where : string => t('builder) = "whereRaw";
-
-[@bs.send.pipe: t('builder)]
-external whereParam : (string, Params.t) => t('builder) = "whereRaw";
-
-[@bs.send.pipe: t('builder)]
-external orWhere : string => t('builder) = "orWhereRaw";
-
-[@bs.send.pipe: t('builder)]
-external orWhereParam : (string, Params.t) => t('builder) = "orWhereRaw";
-
-module Expression = {
-    type _t;
-    type nonrec t = t(_t);
-    [@bs.val] external make : t = "this";
+module type Builder = {
+    type t;
+    let toCore: t => Core.t;
+    let setCoreResult: t => Core.t => t;
 };
 
-[@bs.send.pipe: t('builder)]
-external whereEx : (unit => Expression.t) => t('builder) = "where";
+module MakeGenericExpr = (Expression: { type t }, M: Builder) => {
+    [@bs.send.pipe: Core.t]
+    external _where : string => Core.t = "whereRaw";
+    let where = (s, builder) =>
+        M.toCore(builder)
+            |> _where(s)
+            |> M.setCoreResult(builder);
 
-[@bs.send.pipe: t('builder)]
-external orWhereEx : (unit => Expression.t) => t('builder) = "orWhere";
+    [@bs.send.pipe: Core.t]
+    external _whereParam : (string, Params.t) => Core.t = "whereRaw";
+    let whereParam = (s, p, builder) =>
+        M.toCore(builder)
+            |> _whereParam(s, p)
+            |> M.setCoreResult(builder);
+
+    [@bs.send.pipe: Core.t]
+    external _orWhere : string => Core.t = "orWhereRaw";
+    let orWhere = (s, builder) =>
+        M.toCore(builder)
+            |> _orWhere(s)
+            |> M.setCoreResult(builder);
+
+    [@bs.send.pipe: Core.t]
+    external _orWhereParam : (string, Params.t) => Core.t = "orWhereRaw";
+    let orWhereParam = (s, p, builder) =>
+        M.toCore(builder)
+            |> _orWhereParam(s, p)
+            |> M.setCoreResult(builder);
+
+    [@bs.send.pipe: Core.t]
+    external _whereEx : (unit => Expression.t) => Core.t = "where";
+    let whereEx = (f, builder) =>
+        M.toCore(builder)
+            |> _whereEx(f)
+            |> M.setCoreResult(builder);
+
+    [@bs.send.pipe: Core.t]
+    external _orWhereEx : (unit => Expression.t) => Core.t = "orWhere";
+    let orWhereEx = (f, builder) =>
+        M.toCore(builder)
+            |> _orWhereEx(f)
+            |> M.setCoreResult(builder);
+};
+
+module Expression = {
+    type t = Core.t;
+    [@bs.val] external make : t = "this";
+
+    include MakeGenericExpr({ type nonrec t = t }, {
+        type nonrec t = t;
+        let toCore = (v) => v;
+        let setCoreResult = (_, v) => v;
+    });
+};
+
+module Make = MakeGenericExpr(Expression);

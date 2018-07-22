@@ -1,5 +1,4 @@
-type _t;
-type t = Whereable.t(_t);
+type t = Core.t;
 
 [@bs.send] external make : Core.t => t = "select";
 
@@ -22,6 +21,13 @@ let from = (~alias=?, table) =>
         | _ => _from(table)
     };
 
-[@bs.send.pipe: t] external groupBy : string => t = "";
+[@bs.send.pipe: t] external innerJoin : string => string => string => string => t = "";
 
-[@bs.send] external toString : t => string = "";
+[@bs.send.pipe: t] external groupBy : string => t = "";
+[@bs.send.pipe: t] external toString : string = "";
+
+include Whereable.Make({
+    type nonrec t = t;
+    let toCore = (v) => v;
+    let setCoreResult = (_, v) => v;
+});

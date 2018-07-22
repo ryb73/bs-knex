@@ -2,7 +2,9 @@
     "name" : "bs-knex",
     "namespace": true,
     "sources" : [
-        { "dir" : "src" },
+        {
+            "dir": "src",
+        },
         {
             "dir": "test",
             "type": "dev"
