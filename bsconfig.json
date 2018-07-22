@@ -1,7 +1,7 @@
 {
     "name" : "bs-knex",
     "namespace": true,
-    "sources" : [
+    "sources": [
         {
             "dir": "src",
         },
