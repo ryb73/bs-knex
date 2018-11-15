@@ -24,6 +24,18 @@ let from = (~alias=?, table) =>
 [@bs.send.pipe: t] external innerJoin : string => string => string => string => t = "";
 
 [@bs.send.pipe: t] external groupBy : string => t = "";
+
+
+type order = Ascending | Descending;
+[@bs.send.pipe: t] external _orderBy : string => string => t = "orderBy";
+let orderBy = (column, order, select) => {
+    switch order {
+        | Ascending => "asc"
+        | Descending => "desc"
+    }
+    |> _orderBy(column, _, select)
+};
+
 [@bs.send.pipe: t] external toString : string = "";
 
 include Whereable.Make({
