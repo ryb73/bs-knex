@@ -2,23 +2,23 @@ type t = Core.t;
 
 [@bs.send] external make : Core.t => t = "select";
 
-[@bs.send.pipe: t] external _column : string => t = "column";
-[@bs.send.pipe: t] external _columnAlias : Js.Dict.t(string) => t = "column";
+[@bs.send.pipe: t] external columnAlias : Js.Dict.t(string) => t = "column";
+[@bs.send.pipe: t] external column : string => t = "column";
 let column = (~alias=?, name) =>
     switch alias {
-        | Some(alias) => _columnAlias(Js.Dict.fromArray([| (alias, name) |]))
-        | _ => _column(name)
+        | Some(alias) => columnAlias(Js.Dict.fromArray([| (alias, name) |]))
+        | _ => column(name)
     };
 
 [@bs.send.pipe: t] external count : string => t = "";
 [@bs.send.pipe: t] external countDistinct : string => t = "";
 
-[@bs.send.pipe: t] external _from : string => t = "from";
-[@bs.send.pipe: t] external _fromAlias : Js.Dict.t(string) => t = "from";
+[@bs.send.pipe: t] external fromAlias : Js.Dict.t(string) => t = "from";
+[@bs.send.pipe: t] external from : string => t = "from";
 let from = (~alias=?, table) =>
     switch alias {
-        | Some(alias) => _fromAlias(Js.Dict.fromArray([| (alias, table) |]))
-        | _ => _from(table)
+        | Some(alias) => fromAlias(Js.Dict.fromArray([| (alias, table) |]))
+        | _ => from(table)
     };
 
 [@bs.send.pipe: t] external innerJoin : string => string => string => string => t = "";
@@ -27,19 +27,22 @@ let from = (~alias=?, table) =>
 
 
 type order = Ascending | Descending;
-[@bs.send.pipe: t] external _orderBy : string => string => t = "orderBy";
+[@bs.send.pipe: t] external orderBy : string => string => t = "orderBy";
 let orderBy = (column, order, select) => {
     switch order {
         | Ascending => "asc"
         | Descending => "desc"
     }
-    |> _orderBy(column, _, select)
+    |> orderBy(column, _, select)
 };
 
-[@bs.send.pipe: t] external toString : string = "";
-
-include Whereable.Make({
+module Builder = {
     type nonrec t = t;
-    let toCore = (v) => v;
-    let setCoreResult = (_, v) => v;
-});
+    type result = array(Js.Json.t);
+    let getCore = (v) => v;
+    let setCore = (_, v) => v;
+    let finish = getCore;
+};
+
+include Queryable.Make(Builder);
+include Whereable.Make(Builder);

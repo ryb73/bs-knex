@@ -1,9 +1,9 @@
-type _any;
-external _any : _ => _any = "%identity";
+type any;
+external any : _ => any = "%identity";
 
 type t = {
     internalInsert: Core.t,
-    pendingSets: Js.Dict.t(_any)
+    pendingSets: Js.Dict.t(any)
 };
 
 let make = (knex) => {
@@ -12,17 +12,24 @@ let make = (knex) => {
 };
 
 let set = (column, value, { pendingSets } as i) => {
-    Js.Dict.set(pendingSets, column, _any(value));
+    Js.Dict.set(pendingSets, column, any(value));
     { ...i, pendingSets };
 };
 
-[@bs.send.pipe: Core.t] external _insert : Js.Dict.t(_) => Core.t = "insert";
-[@bs.send.pipe: Core.t] external _toString : unit => string = "toString";
-let toString = ({ internalInsert, pendingSets }) =>
-    internalInsert
-        |> _insert(pendingSets)
-        |> _toString();
-
-[@bs.send.pipe: Core.t] external _into : string => Core.t = "into";
+[@bs.send.pipe: Core.t] external into : string => Core.t = "into";
 let into = (table, { internalInsert } as i) =>
-    { ...i, internalInsert: _into(table, internalInsert) };
+    { ...i, internalInsert: into(table, internalInsert) };
+
+[@bs.send.pipe: Core.t] external insert : Js.Dict.t(_) => Core.t = "insert";
+
+module Builder = {
+    type nonrec t = t;
+    type result = int;
+    let getCore = ({ internalInsert }) => internalInsert;
+    let setCore = (update, internalInsert) => { ...update, internalInsert };
+    let finish = ({ internalInsert, pendingSets }) =>
+        internalInsert
+        |> insert(pendingSets);
+};
+
+include Queryable.Make(Builder);

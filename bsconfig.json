@@ -1,9 +1,12 @@
 {
-    "name" : "bs-knex",
+    "name": "bs-knex",
+    "bs-dependencies": [ "reduice" ],
+    "bs-dev-dependencies": [ "bs-promise-ex" ],
     "namespace": true,
     "sources": [
         {
             "dir": "src",
+            "public": [ "Core", "Delete", "Expression", "Insert", "Params", "Select", "Update"],
         },
         {
             "dir": "test",

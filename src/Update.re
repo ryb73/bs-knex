@@ -6,10 +6,10 @@ type t = {
     pendingSets: Js.Dict.t(_any)
 };
 
-type _f = [@bs] string => Core.t;
-external _asFunc : Core.t => _f = "%identity";
+type f = [@bs] string => Core.t;
+external asFunc : Core.t => f = "%identity";
 let make = (table, knex) => {
-    let f = _asFunc(knex);
+    let f = asFunc(knex);
     {
         internalUpdate: [@bs] f(table),
         pendingSets: Js.Dict.empty()
@@ -21,15 +21,17 @@ let set = (column, value, { pendingSets } as u) => {
     { ...u, pendingSets };
 };
 
-[@bs.send.pipe: Core.t] external _update : Js.Dict.t(_) => Core.t = "update";
-[@bs.send.pipe: Core.t] external _toString : unit => string = "toString";
-let toString = ({ internalUpdate, pendingSets }) =>
-    internalUpdate
-        |> _update(pendingSets)
-        |> _toString();
+[@bs.send.pipe: Core.t] external update : Js.Dict.t(_) => Core.t = "update";
 
-include Whereable.Make({
+module Builder = {
     type nonrec t = t;
-    let toCore = ({ internalUpdate }) => internalUpdate;
-    let setCoreResult = (update, internalUpdate) => { ...update, internalUpdate };
-});
+    type result = int;
+    let getCore = ({ internalUpdate }) => internalUpdate;
+    let setCore = (update, internalUpdate) => { ...update, internalUpdate };
+    let finish = ({ internalUpdate, pendingSets }) =>
+        internalUpdate
+        |> update(pendingSets);
+};
+
+include Queryable.Make(Builder);
+include Whereable.Make(Builder);
