@@ -1,33 +1,33 @@
-type t = Core.t;
+type t('a) = Core.t(unit);
 
-[@bs.send] external make : Core.t => t = "select";
+[@bs.send] external make : Core.t(('a, _, _, _)) => t('a) = "select";
 
-[@bs.send.pipe: t] external columnAlias : Js.Dict.t(string) => t = "column";
-[@bs.send.pipe: t] external column : string => t = "column";
+[@bs.send.pipe: t('a)] external columnAlias : Js.Dict.t(string) => t('a) = "column";
+[@bs.send.pipe: t('a)] external column : string => t('a) = "column";
 let column = (~alias=?, name) =>
     switch alias {
         | Some(alias) => columnAlias(Js.Dict.fromArray([| (alias, name) |]))
         | _ => column(name)
     };
 
-[@bs.send.pipe: t] external count : string => t = "";
-[@bs.send.pipe: t] external countDistinct : string => t = "";
+[@bs.send.pipe: t('a)] external count : string => t('a) = "";
+[@bs.send.pipe: t('a)] external countDistinct : string => t('a) = "";
 
-[@bs.send.pipe: t] external fromAlias : Js.Dict.t(string) => t = "from";
-[@bs.send.pipe: t] external from : string => t = "from";
+[@bs.send.pipe: t('a)] external fromAlias : Js.Dict.t(string) => t('a) = "from";
+[@bs.send.pipe: t('a)] external from : string => t('a) = "from";
 let from = (~alias=?, table) =>
     switch alias {
         | Some(alias) => fromAlias(Js.Dict.fromArray([| (alias, table) |]))
         | _ => from(table)
     };
 
-[@bs.send.pipe: t] external innerJoin : string => string => string => string => t = "";
+[@bs.send.pipe: t('a)] external innerJoin : string => string => string => string => t('a) = "";
 
-[@bs.send.pipe: t] external groupBy : string => t = "";
+[@bs.send.pipe: t('a)] external groupBy : string => t('a) = "";
 
 
 type order = Ascending | Descending;
-[@bs.send.pipe: t] external orderBy : string => string => t = "orderBy";
+[@bs.send.pipe: t('a)] external orderBy : string => string => t('a) = "orderBy";
 let orderBy = (column, order, select) => {
     switch order {
         | Ascending => "asc"
@@ -37,8 +37,7 @@ let orderBy = (column, order, select) => {
 };
 
 module Builder = {
-    type nonrec t = t;
-    type result = array(Js.Json.t);
+    type nonrec t('a) = t('a);
     let getCore = (v) => v;
     let setCore = (_, v) => v;
     let finish = getCore;

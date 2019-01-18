@@ -1,7 +1,6 @@
 module type Builder = {
-    type t;
-    type result;
-    let getCore: t => Core.t;
-    let setCore: t => Core.t => t;
-    let finish: t => Core.t;
+    type t('resultType);
+    let getCore: t('a) => Core.t(unit);
+    let setCore: t('a) => Core.t(unit) => t('a);
+    let finish: t(_) => Core.t(unit);
 };

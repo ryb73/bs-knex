@@ -1,13 +1,13 @@
 type any;
 external any : _ => any = "%identity";
 
-type t = {
-    internalInsert: Core.t,
+type t('a) = {
+    internalInsert: Core.t(unit),
     pendingSets: Js.Dict.t(any)
 };
 
-let make = (knex) => {
-    internalInsert: knex,
+let make = (knex: Core.t(_)) => {
+    internalInsert: Obj.magic(knex),
     pendingSets: Js.Dict.empty()
 };
 
@@ -16,17 +16,23 @@ let set = (column, value, { pendingSets } as i) => {
     { ...i, pendingSets };
 };
 
-[@bs.send.pipe: Core.t] external into : string => Core.t = "into";
-let into = (table, { internalInsert } as i) =>
-    { ...i, internalInsert: into(table, internalInsert) };
+let wrap = (f) =>
+    ({ internalInsert } as i) =>
+        { ...i, internalInsert: f(internalInsert) };
 
-[@bs.send.pipe: Core.t] external insert : Js.Dict.t(_) => Core.t = "insert";
+[@bs.send.pipe: Core.t('a)] external into : string => Core.t('a) = "into";
+let into = table => wrap(into(table));
+
+[@bs.send.pipe: Core.t('a)] external returning : array(string) => Core.t('a) = "returning";
+let returning = columns => wrap(returning(columns));
+
+[@bs.send.pipe: Core.t('a)] external insert : Js.Dict.t(_) => Core.t('a) = "insert";
 
 module Builder = {
-    type nonrec t = t;
-    type result = int;
-    let getCore = ({ internalInsert }) => internalInsert;
-    let setCore = (update, internalInsert) => { ...update, internalInsert };
+    type nonrec t('a) = t('a);
+    let getCore = ({ internalInsert }) => Obj.magic(internalInsert);
+    let setCore = (update, internalInsert: Core.t(_)) =>
+        { ...update, internalInsert: Obj.magic(internalInsert) };
     let finish = ({ internalInsert, pendingSets }) =>
         internalInsert
         |> insert(pendingSets);

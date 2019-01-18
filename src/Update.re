@@ -1,13 +1,13 @@
-type _any;
-external _any : _ => _any = "%identity";
+type any;
+external any : _ => any = "%identity";
 
-type t = {
-    internalUpdate: Core.t,
-    pendingSets: Js.Dict.t(_any)
+type t('resultType) = {
+    internalUpdate: Core.t(unit),
+    pendingSets: Js.Dict.t(any)
 };
 
-type f = [@bs] string => Core.t;
-external asFunc : Core.t => f = "%identity";
+type f('a) = [@bs] string => Core.t(unit);
+external asFunc : Core.t((_, 'a, _, _)) => f('a) = "%identity";
 let make = (table, knex) => {
     let f = asFunc(knex);
     {
@@ -17,15 +17,21 @@ let make = (table, knex) => {
 };
 
 let set = (column, value, { pendingSets } as u) => {
-    Js.Dict.set(pendingSets, column, _any(value));
+    Js.Dict.set(pendingSets, column, any(value));
     { ...u, pendingSets };
 };
 
-[@bs.send.pipe: Core.t] external update : Js.Dict.t(_) => Core.t = "update";
+let wrap = (f) =>
+    ({ internalUpdate } as i) =>
+        { ...i, internalUpdate: f(internalUpdate) };
+
+[@bs.send.pipe: Core.t('a)] external returning : array(string) => Core.t('a) = "returning";
+let returning = columns => wrap(returning(columns));
+
+[@bs.send.pipe: Core.t('a)] external update : Js.Dict.t(_) => Core.t('a) = "update";
 
 module Builder = {
-    type nonrec t = t;
-    type result = int;
+    type nonrec t('a) = t('a);
     let getCore = ({ internalUpdate }) => internalUpdate;
     let setCore = (update, internalUpdate) => { ...update, internalUpdate };
     let finish = ({ internalUpdate, pendingSets }) =>
