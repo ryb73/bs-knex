@@ -5,7 +5,9 @@
     "sources": [
         {
             "dir": "src",
-            "public": [ "Core", "Delete", "Expression", "Insert", "Params", "Select", "Update"],
+            "public":
+                [ "Core", "Delete", "Expression", "Insert", "Params", "Select",
+                  "Update", "MySQL", "PostgreSQL", "Sqlite3", "MSSQL" ],
         },
         {
             "dir": "test",
