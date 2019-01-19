@@ -7,7 +7,7 @@
             "dir": "src",
             "public":
                 [ "Core", "Delete", "Expression", "Insert", "Params", "Select",
-                  "Update", "MySQL", "PostgreSQL", "Sqlite3", "MSSQL" ],
+                  "Update", "MySQL", "PostgreSQL", "SQLite3", "MSSQL" ],
         },
         {
             "dir": "test",
