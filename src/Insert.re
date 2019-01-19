@@ -1,28 +1,41 @@
-type _any;
-external _any : _ => _any = "%identity";
+type any;
+external any : _ => any = "%identity";
 
-type t = {
-    internalInsert: Core.t,
-    pendingSets: Js.Dict.t(_any)
+type t('a) = {
+    internalInsert: Core.t(unit),
+    pendingSets: Js.Dict.t(any)
 };
 
-let make = (knex) => {
-    internalInsert: knex,
+let make = (knex: Core.t(_)) => {
+    internalInsert: Obj.magic(knex),
     pendingSets: Js.Dict.empty()
 };
 
 let set = (column, value, { pendingSets } as i) => {
-    Js.Dict.set(pendingSets, column, _any(value));
+    Js.Dict.set(pendingSets, column, any(value));
     { ...i, pendingSets };
 };
 
-[@bs.send.pipe: Core.t] external _insert : Js.Dict.t(_) => Core.t = "insert";
-[@bs.send.pipe: Core.t] external _toString : unit => string = "toString";
-let toString = ({ internalInsert, pendingSets }) =>
-    internalInsert
-        |> _insert(pendingSets)
-        |> _toString();
+let wrap = (f) =>
+    ({ internalInsert } as i) =>
+        { ...i, internalInsert: f(internalInsert) };
 
-[@bs.send.pipe: Core.t] external _into : string => Core.t = "into";
-let into = (table, { internalInsert } as i) =>
-    { ...i, internalInsert: _into(table, internalInsert) };
+[@bs.send.pipe: Core.t('a)] external into : string => Core.t('a) = "into";
+let into = table => wrap(into(table));
+
+[@bs.send.pipe: Core.t('a)] external returning : array(string) => Core.t('a) = "returning";
+let returning = columns => wrap(returning(columns));
+
+[@bs.send.pipe: Core.t('a)] external insert : Js.Dict.t(_) => Core.t('a) = "insert";
+
+module Builder = {
+    type nonrec t('a) = t('a);
+    let getCore = ({ internalInsert }) => Obj.magic(internalInsert);
+    let setCore = (update, internalInsert: Core.t(_)) =>
+        { ...update, internalInsert: Obj.magic(internalInsert) };
+    let finish = ({ internalInsert, pendingSets }) =>
+        internalInsert
+        |> insert(pendingSets);
+};
+
+include Queryable.Make(Builder);

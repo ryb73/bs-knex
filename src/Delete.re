@@ -1,17 +1,19 @@
-type t = Core.t;
+type t('resultType) = Core.t(unit);
 
-type _f = [@bs] string => Core.t;
-external _asFunc : Core.t => _f = "%identity";
-[@bs.send] external _del : Core.t => t = "del";
+type f('a) = [@bs] string => t('a);
+external asFunc : Core.t((_, _, _, 'a)) => f('a) = "%identity";
+[@bs.send] external del : t('a) => t('a) = "del";
 let make = (table, knex) => {
-    let f = _asFunc(knex);
-    _del([@bs] f(table));
+    let f = asFunc(knex);
+    del([@bs] f(table));
 };
 
-[@bs.send.pipe: t] external toString : string = "";
+module Builder = {
+    type nonrec t('a) = t('a);
+    let getCore = (v) => v;
+    let setCore = (_, v) => v;
+    let finish = getCore;
+};
 
-include Whereable.Make({
-    type nonrec t = t;
-    let toCore = (v) => v;
-    let setCoreResult = (_, v) => v;
-});
+include Queryable.Make(Builder);
+include Whereable.Make(Builder);

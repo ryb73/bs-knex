@@ -1,9 +1,13 @@
 {
-    "name" : "bs-knex",
+    "name": "bs-knex",
+    "bs-dependencies": [ "reduice" ],
     "namespace": true,
     "sources": [
         {
             "dir": "src",
+            "public":
+                [ "Core", "Delete", "Expression", "Insert", "Params", "Select",
+                  "Update", "MySQL", "PostgreSQL", "SQLite3", "MSSQL" ],
         },
         {
             "dir": "test",

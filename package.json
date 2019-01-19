@@ -1,13 +1,14 @@
 {
   "name": "bs-knex",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "BuckleScript bindings for https://www.npmjs.com/package/knex",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run clean && bsb -make-world",
     "watch": "npm run clean && bsb -make-world -w",
-    "clean": "rm -rf lib && bsb -clean-world"
+    "clean": "rm -rf lib && bsb -clean-world",
+    "postinstall": "[ ! -f package-links.json ] || ppl link-file"
   },
   "keywords": [
     "bucklescript",
@@ -23,9 +24,10 @@
     "url": "git@github.com:ryb73/bs-knex.git"
   },
   "peerDependencies": {
-    "bs-platform": "^3.1.5"
+    "bs-platform": "^4.0.0"
   },
   "dependencies": {
-    "knex": "^0.14.2"
+    "knex": "0.14.2",
+    "reduice": "0.0.1"
   }
 }

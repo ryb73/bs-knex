@@ -1,10 +1,9 @@
-open Whereable;
 open Params.Infix;
 
-let knex = Core.make("mysql");
+let knex = Core.make(MySQL);
 
 Select.(
-    make(knex)
+    Select.make(knex)
     |> count("blah as b")
     |> column(~alias="ha", "huh")
     |> from(~alias="t", "tbl")
@@ -27,7 +26,7 @@ Select.(
 );
 
 Insert.(
-    make(knex)
+    Insert.make(knex)
     |> into("tbl")
     |> set("a", "a\"'y")
     |> set("b", 99)
@@ -37,7 +36,7 @@ Insert.(
 );
 
 Update.(
-    make("tbl", knex)
+    Update.make("tbl", knex)
     |> set("v", 39)
     |> where("a = 9")
     |> whereParam("a = ?", ?? 10)
@@ -46,7 +45,7 @@ Update.(
 );
 
 Delete.(
-    make("tbl", knex)
+    Delete.make("tbl", knex)
     |> where("a = 9")
     |> whereParam("a = ?", ?? 10)
     |> toString

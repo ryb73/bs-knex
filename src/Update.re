@@ -1,15 +1,15 @@
-type _any;
-external _any : _ => _any = "%identity";
+type any;
+external any : _ => any = "%identity";
 
-type t = {
-    internalUpdate: Core.t,
-    pendingSets: Js.Dict.t(_any)
+type t('resultType) = {
+    internalUpdate: Core.t(unit),
+    pendingSets: Js.Dict.t(any)
 };
 
-type _f = [@bs] string => Core.t;
-external _asFunc : Core.t => _f = "%identity";
+type f('a) = [@bs] string => Core.t(unit);
+external asFunc : Core.t((_, 'a, _, _)) => f('a) = "%identity";
 let make = (table, knex) => {
-    let f = _asFunc(knex);
+    let f = asFunc(knex);
     {
         internalUpdate: [@bs] f(table),
         pendingSets: Js.Dict.empty()
@@ -17,19 +17,27 @@ let make = (table, knex) => {
 };
 
 let set = (column, value, { pendingSets } as u) => {
-    Js.Dict.set(pendingSets, column, _any(value));
+    Js.Dict.set(pendingSets, column, any(value));
     { ...u, pendingSets };
 };
 
-[@bs.send.pipe: Core.t] external _update : Js.Dict.t(_) => Core.t = "update";
-[@bs.send.pipe: Core.t] external _toString : unit => string = "toString";
-let toString = ({ internalUpdate, pendingSets }) =>
-    internalUpdate
-        |> _update(pendingSets)
-        |> _toString();
+let wrap = (f) =>
+    ({ internalUpdate } as i) =>
+        { ...i, internalUpdate: f(internalUpdate) };
 
-include Whereable.Make({
-    type nonrec t = t;
-    let toCore = ({ internalUpdate }) => internalUpdate;
-    let setCoreResult = (update, internalUpdate) => { ...update, internalUpdate };
-});
+[@bs.send.pipe: Core.t('a)] external returning : array(string) => Core.t('a) = "returning";
+let returning = columns => wrap(returning(columns));
+
+[@bs.send.pipe: Core.t('a)] external update : Js.Dict.t(_) => Core.t('a) = "update";
+
+module Builder = {
+    type nonrec t('a) = t('a);
+    let getCore = ({ internalUpdate }) => internalUpdate;
+    let setCore = (update, internalUpdate) => { ...update, internalUpdate };
+    let finish = ({ internalUpdate, pendingSets }) =>
+        internalUpdate
+        |> update(pendingSets);
+};
+
+include Queryable.Make(Builder);
+include Whereable.Make(Builder);

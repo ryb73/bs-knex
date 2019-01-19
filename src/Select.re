@@ -1,45 +1,47 @@
-type t = Core.t;
+type t('a) = Core.t(unit);
 
-[@bs.send] external make : Core.t => t = "select";
+[@bs.send] external make : Core.t(('a, _, _, _)) => t('a) = "select";
 
-[@bs.send.pipe: t] external _column : string => t = "column";
-[@bs.send.pipe: t] external _columnAlias : Js.Dict.t(string) => t = "column";
+[@bs.send.pipe: t('a)] external columnAlias : Js.Dict.t(string) => t('a) = "column";
+[@bs.send.pipe: t('a)] external column : string => t('a) = "column";
 let column = (~alias=?, name) =>
     switch alias {
-        | Some(alias) => _columnAlias(Js.Dict.fromArray([| (alias, name) |]))
-        | _ => _column(name)
+        | Some(alias) => columnAlias(Js.Dict.fromArray([| (alias, name) |]))
+        | _ => column(name)
     };
 
-[@bs.send.pipe: t] external count : string => t = "";
-[@bs.send.pipe: t] external countDistinct : string => t = "";
+[@bs.send.pipe: t('a)] external count : string => t('a) = "";
+[@bs.send.pipe: t('a)] external countDistinct : string => t('a) = "";
 
-[@bs.send.pipe: t] external _from : string => t = "from";
-[@bs.send.pipe: t] external _fromAlias : Js.Dict.t(string) => t = "from";
+[@bs.send.pipe: t('a)] external fromAlias : Js.Dict.t(string) => t('a) = "from";
+[@bs.send.pipe: t('a)] external from : string => t('a) = "from";
 let from = (~alias=?, table) =>
     switch alias {
-        | Some(alias) => _fromAlias(Js.Dict.fromArray([| (alias, table) |]))
-        | _ => _from(table)
+        | Some(alias) => fromAlias(Js.Dict.fromArray([| (alias, table) |]))
+        | _ => from(table)
     };
 
-[@bs.send.pipe: t] external innerJoin : string => string => string => string => t = "";
+[@bs.send.pipe: t('a)] external innerJoin : string => string => string => string => t('a) = "";
 
-[@bs.send.pipe: t] external groupBy : string => t = "";
+[@bs.send.pipe: t('a)] external groupBy : string => t('a) = "";
 
 
 type order = Ascending | Descending;
-[@bs.send.pipe: t] external _orderBy : string => string => t = "orderBy";
+[@bs.send.pipe: t('a)] external orderBy : string => string => t('a) = "orderBy";
 let orderBy = (column, order, select) => {
     switch order {
         | Ascending => "asc"
         | Descending => "desc"
     }
-    |> _orderBy(column, _, select)
+    |> orderBy(column, _, select)
 };
 
-[@bs.send.pipe: t] external toString : string = "";
+module Builder = {
+    type nonrec t('a) = t('a);
+    let getCore = (v) => v;
+    let setCore = (_, v) => v;
+    let finish = getCore;
+};
 
-include Whereable.Make({
-    type nonrec t = t;
-    let toCore = (v) => v;
-    let setCoreResult = (_, v) => v;
-});
+include Queryable.Make(Builder);
+include Whereable.Make(Builder);
