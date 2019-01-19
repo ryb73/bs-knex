@@ -28,11 +28,6 @@
   },
   "dependencies": {
     "knex": "0.14.2",
-    "pg": "^7.8.0",
     "reduice": "0.0.1"
-  },
-  "devDependencies": {
-    "bs-promise-ex": "0.0.1",
-    "pg": "^7.8.0"
   }
 }

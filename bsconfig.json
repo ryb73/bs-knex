@@ -1,7 +1,6 @@
 {
     "name": "bs-knex",
     "bs-dependencies": [ "reduice" ],
-    "bs-dev-dependencies": [ "bs-promise-ex" ],
     "namespace": true,
     "sources": [
         {
