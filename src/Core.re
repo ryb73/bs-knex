@@ -31,4 +31,6 @@ let make = (type a, ~host=?, ~user=?, ~password=?, ~database=?, client: client(a
     |> make
     |> Obj.magic;
 
+[@bs.send] external raw: t(_) => string => Reduice.Promise.t(Js.Json.t) = "";
+
 [@bs.send.pipe: t(_)] external destroy: (~callback: (unit => unit)=?) => unit = "";
