@@ -1,43 +1,34 @@
 module Make = (Expression: { type t }, M: Builder.Builder) => {
+    let helper = (f, builder) =>
+        M.getCore(builder)
+        |> f
+        |> M.setCore(builder);
+
     [@bs.send.pipe: Core.t(_)]
     external where : string => Core.t(_) = "whereRaw";
-    let where = (s, builder) =>
-        M.getCore(builder)
-        |> where(s)
-        |> M.setCore(builder);
+    let where = (s) => helper(where(s));
 
     [@bs.send.pipe: Core.t(_)]
     external whereParam : (string, Params.t) => Core.t(_) = "whereRaw";
-    let whereParam = (s, p, builder) =>
-        M.getCore(builder)
-        |> whereParam(s, p)
-        |> M.setCore(builder);
+    let whereParam = (s, p) => helper(whereParam(s, p));
+
+    [@bs.send.pipe: Core.t(_)]
+    external whereIn : (string, array(_)) => Core.t(_) = "whereIn";
+    let whereIn = (s, a) => helper(whereIn(s, a));
 
     [@bs.send.pipe: Core.t(_)]
     external orWhere : string => Core.t(_) = "orWhereRaw";
-    let orWhere = (s, builder) =>
-        M.getCore(builder)
-        |> orWhere(s)
-        |> M.setCore(builder);
+    let orWhere = (s) => helper(orWhere(s));
 
     [@bs.send.pipe: Core.t(_)]
     external orWhereParam : (string, Params.t) => Core.t(_) = "orWhereRaw";
-    let orWhereParam = (s, p, builder) =>
-        M.getCore(builder)
-        |> orWhereParam(s, p)
-        |> M.setCore(builder);
+    let orWhereParam = (s, p) => helper(orWhereParam(s, p));
 
     [@bs.send.pipe: Core.t(_)]
     external whereEx : (unit => Expression.t) => Core.t(_) = "where";
-    let whereEx = (f, builder) =>
-        M.getCore(builder)
-        |> whereEx(f)
-        |> M.setCore(builder);
+    let whereEx = (f) => helper(whereEx(f));
 
     [@bs.send.pipe: Core.t(_)]
     external orWhereEx : (unit => Expression.t) => Core.t(_) = "orWhere";
-    let orWhereEx = (f, builder) =>
-        M.getCore(builder)
-        |> orWhereEx(f)
-        |> M.setCore(builder);
+    let orWhereEx = (f) => helper(orWhereEx(f));
 };

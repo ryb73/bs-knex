@@ -9,6 +9,8 @@ Select.(
     |> from(~alias="t", "tbl")
     |> groupBy("ha")
     |> where("b = b")
+    |> whereIn("num", [| 1, 2, 299 |])
+    |> whereIn("str", [| "1", "2", "299" |])
     |> whereEx(() => { open! Expression;
         Expression.make
         |> whereParam("a = ?", ?? 9)
