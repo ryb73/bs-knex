@@ -33,6 +33,7 @@ Insert.(
     |> set("a", "a\"'y")
     |> set("b", 99)
     |> set("bool", true)
+    |> returning([|"id"|])
     |> toString
     |> Js.log
 );
