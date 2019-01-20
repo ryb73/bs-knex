@@ -4,7 +4,7 @@ type connection;
     => connection = "";
 
 type opts;
-[@bs.obj] external opts: (~client: string, ~connection: connection) => opts = "";
+[@bs.obj] external opts: (~connection: connection=?, ~client: string) => opts = "";
 
 type client('resultTypes) =
     | PostgreSQL: client(PostgreSQL.resultTypes)
@@ -23,13 +23,22 @@ let clientToString = (type a, client: client(a)) =>
 type t('resultTypes);
 
 [@bs.module] external make: opts => Js.Json.t = "knex";
-let make = (type a, ~host=?, ~user=?, ~password=?, ~database=?, client: client(a)): t(a) =>
+let make = (type a, ~host=?, ~user=?, ~password=?, ~database=?, client: client(a)): t(a) => {
+    /* Don't make connection object if none of the options are set. knex treats the
+       existence of `connection` as enabling connections even if it's empty */
+    let connection =
+        [| host, user, password, database |]
+        |> Js.Array.some((!==)(None))
+        ? Some(connection(~host?, ~user?, ~password?, ~database?))
+        : None;
+
     opts(
+        ~connection?,
         ~client=clientToString(client),
-        ~connection=connection(~host?, ~user?, ~password?, ~database?),
     )
     |> make
     |> Obj.magic;
+};
 
 [@bs.send] external raw: t(_) => string => Reduice.Promise.t(Js.Json.t) = "";
 
