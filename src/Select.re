@@ -1,6 +1,6 @@
-type t('a) = Core.t(unit);
+type t('a) = KnexTypes.knex(unit);
 
-[@bs.send] external make : Core.t(('a, _, _, _)) => t('a) = "select";
+[@bs.send] external make : KnexTypes.knex(('a, _, _, _)) => t('a) = "select";
 
 [@bs.send.pipe: t('a)] external columnAlias : Js.Dict.t(string) => t('a) = "column";
 [@bs.send.pipe: t('a)] external column : string => t('a) = "column";

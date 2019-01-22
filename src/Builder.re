@@ -1,6 +1,6 @@
 module type Builder = {
     type t('resultType);
-    let getCore: t('a) => Core.t(unit);
-    let setCore: t('a) => Core.t(unit) => t('a);
-    let finish: t(_) => Core.t(unit);
+    let getCore: t('a) => KnexTypes.knex(unit);
+    let setCore: t('a) => KnexTypes.knex(unit) => t('a);
+    let finish: t(_) => KnexTypes.knex(unit);
 };

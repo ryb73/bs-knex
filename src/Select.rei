@@ -1,5 +1,5 @@
 type t('a);
-let make: Core.t(('a, _, _, _)) => t('a);
+let make: KnexTypes.knex(('a, _, _, _)) => t('a);
 
 let column: (~alias: Js.Dict.key=?, string, t('a)) => t('a);
 

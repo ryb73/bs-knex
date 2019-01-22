@@ -1,4 +1,4 @@
-[@bs.send.pipe: Core.t(_)] external toString : string = "";
+[@bs.send.pipe: KnexTypes.knex(_)] external toString : string = "";
 
 module Make = (M: Builder.Builder) => {
     let toString = (builder) =>

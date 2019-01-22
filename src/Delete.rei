@@ -1,5 +1,5 @@
 type t('resultType);
-let make: (string, Core.t((_, _, _, 'resultType))) => t('resultType);
+let make: (string, KnexTypes.knex((_, _, _, 'resultType))) => t('resultType);
 
 let where: (string, t('a)) => t('a);
 let whereParam: (string, Params.t, t('a)) => t('a);

@@ -1,7 +1,7 @@
-type t('resultType) = Core.t(unit);
+type t('resultType) = KnexTypes.knex(unit);
 
 type f('a) = [@bs] string => t('a);
-external asFunc : Core.t((_, _, _, 'a)) => f('a) = "%identity";
+external asFunc : KnexTypes.knex((_, _, _, 'a)) => f('a) = "%identity";
 [@bs.send] external del : t('a) => t('a) = "del";
 let make = (table, knex) => {
     let f = asFunc(knex);

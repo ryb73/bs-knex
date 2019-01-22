@@ -1,4 +1,3 @@
-/* TODO: implement */
 type resultTypes = (
     /* select */ Js.Json.t,
     /* insert */ Js.Json.t,

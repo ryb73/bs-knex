@@ -2,11 +2,11 @@ type any;
 external any : _ => any = "%identity";
 
 type t('a) = {
-    internalInsert: Core.t(unit),
+    internalInsert: KnexTypes.knex(unit),
     pendingSets: Js.Dict.t(any)
 };
 
-let make = (knex: Core.t(_)) => {
+let make = (knex: KnexTypes.knex(_)) => {
     internalInsert: Obj.magic(knex),
     pendingSets: Js.Dict.empty()
 };
@@ -20,18 +20,18 @@ let wrap = (f) =>
     ({ internalInsert } as i) =>
         { ...i, internalInsert: f(internalInsert) };
 
-[@bs.send.pipe: Core.t('a)] external into : string => Core.t('a) = "into";
+[@bs.send.pipe: KnexTypes.knex('a)] external into : string => KnexTypes.knex('a) = "into";
 let into = table => wrap(into(table));
 
-[@bs.send.pipe: Core.t('a)] external returning : array(string) => Core.t('a) = "returning";
+[@bs.send.pipe: KnexTypes.knex('a)] external returning : array(string) => KnexTypes.knex('a) = "returning";
 let returning = columns => wrap(returning(columns));
 
-[@bs.send.pipe: Core.t('a)] external insert : Js.Dict.t(_) => Core.t('a) = "insert";
+[@bs.send.pipe: KnexTypes.knex('a)] external insert : Js.Dict.t(_) => KnexTypes.knex('a) = "insert";
 
 module Builder = {
     type nonrec t('a) = t('a);
     let getCore = ({ internalInsert }) => Obj.magic(internalInsert);
-    let setCore = (update, internalInsert: Core.t(_)) =>
+    let setCore = (update, internalInsert: KnexTypes.knex(_)) =>
         { ...update, internalInsert: Obj.magic(internalInsert) };
     let finish = ({ internalInsert, pendingSets }) =>
         internalInsert

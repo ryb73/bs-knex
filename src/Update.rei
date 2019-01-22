@@ -1,5 +1,5 @@
 type t('resultType);
-let make: (string, Core.t((_, 'a, _, _))) => t('a);
+let make: (string, KnexTypes.knex((_, 'a, _, _))) => t('a);
 
 let set: (Js.Dict.key, _, t('a)) => t('a);
 let returning: (array(string), t('a)) => t('a);

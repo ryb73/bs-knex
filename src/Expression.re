@@ -1,4 +1,4 @@
-type t = Core.t(unit);
+type t = KnexTypes.knex(unit);
 [@bs.val] external make: t = "this";
 
 include AbstractExpression.Make({ type nonrec t = t }, {

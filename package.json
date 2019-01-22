@@ -1,5 +1,5 @@
 {
-  "name": "bs-knex",
+  "name": "@ryb73/bs-knex",
   "version": "0.0.1",
   "description": "BuckleScript bindings for https://www.npmjs.com/package/knex",
   "main": "index.js",
@@ -10,6 +10,10 @@
     "clean": "rm -rf lib && bsb -clean-world",
     "postinstall": "[ ! -f package-links.json ] || ppl link-file"
   },
+  "files": [
+    "/bsconfig.json",
+    "/src"
+  ],
   "keywords": [
     "bucklescript",
     "reason",
@@ -27,7 +31,7 @@
     "bs-platform": "^4.0.0"
   },
   "dependencies": {
-    "knex": "0.14.2",
-    "reduice": "0.0.1"
+    "@ryb73/reduice": "0.0.4",
+    "knex": "0.16.3"
   }
 }

@@ -1,6 +1,7 @@
+open Knex;
 open Params.Infix;
 
-let knex = Core.make(~host="127.0.0.1", ~user="ryan", ~database="mopho", PostgreSQL);
+let knex = Knex.make(PostgreSQL);
 
 Select.(
     Select.make(knex)
