@@ -42,4 +42,7 @@ let make = (type a, ~host=?, ~user=?, ~password=?, ~database=?, client: client(a
 
 [@bs.send] external raw: t(_) => string => Reduice.Promise.t(Js.Json.t) = "";
 
+[@bs.send] external transaction:
+    t('a) => (t('a) => Reduice.Promise.t(_)) => Reduice.Promise.t(_) = "";
+
 [@bs.send.pipe: t(_)] external destroy: (~callback: (unit => unit)=?) => unit = "";

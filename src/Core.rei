@@ -11,3 +11,4 @@ let make:
 let destroy: (~callback: (unit => unit)=?, t(_)) => unit;
 
 let raw: t(_) => string => Reduice.Promise.t(Js.Json.t);
+let transaction: (t('a), t('a) => Reduice.Promise.t('b)) => Reduice.Promise.t('c);
