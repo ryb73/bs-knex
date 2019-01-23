@@ -17,10 +17,10 @@
   dependencies:
     bluebird "^3.5.1"
 
-"@ryb73/reduice@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@ryb73/reduice/-/reduice-0.0.4.tgz#6844a95ac91e01117fe4cbe5fda6e680936e3c16"
-  integrity sha512-P4lTUlQENBKAqX1Fig9u2h625SG7i2LskA9AnPkJR9/dqXG6AXNa4sVGUkJ7i3tMqzxOqWv3emoqKd5LgrCXig==
+"@ryb73/reduice@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@ryb73/reduice/-/reduice-0.0.5.tgz#53286d64c7286de1f4124734d051fd091b2246de"
+  integrity sha512-SFuGIgIDwspJbvQ5up1We3JA9JP+6pk6MQcEicu4Kj3ZS3ilybacIJr7IQKCtMaMDpFuhmgdtiVK3wslPpT4Qg==
   dependencies:
     "@ryb73/bs-bluebird" "0.0.2"
 
