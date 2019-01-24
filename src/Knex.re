@@ -59,4 +59,4 @@ let make =
 [@bs.send] external transaction:
     t('a) => (t('a) => Reduice.Promise.t(_)) => Reduice.Promise.t(_) = "";
 
-[@bs.send.pipe: t(_)] external destroy: unit => Reduice.Promise.t(unit) = "";
+[@bs.send] external destroy: t(_) => Reduice.Promise.t(unit) = "";

@@ -139,7 +139,7 @@ type client('resultTypes) =
 let make:
     (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?,
      client('resultType)) => Types.knex('resultType);
-let destroy: (unit, Types.knex('a)) => Reduice.Promise.t(unit);
+let destroy: Types.knex('a) => Reduice.Promise.t(unit);
 
 let raw: Types.knex(_) => string => Reduice.Promise.t(Js.Json.t);
 let transaction: (Types.knex('a), Types.knex('a) => Reduice.Promise.t('b)) => Reduice.Promise.t('c);
