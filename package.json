@@ -31,7 +31,7 @@
     "bs-platform": "^4.0.0"
   },
   "dependencies": {
-    "@ryb73/reduice": "0.0.5",
+    "@ryb73/reduice": "0.0.6",
     "knex": "0.16.3"
   }
 }
