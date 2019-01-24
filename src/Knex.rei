@@ -1,3 +1,9 @@
+module Types: {
+    type knex('resultTypes);
+};
+
+type t('resultTypes) = Types.knex('resultTypes);
+
 module Params: {
     type t = Params.t;
     let make: 'a => t;
@@ -9,7 +15,7 @@ module Params: {
     };
 };
 module Expression: {
-    type t = KnexTypes.knex(unit);
+    type t = Types.knex(unit);
     [@bs.val] external make: t = "this";
     let where: (string, t) => t;
     let whereParam: (string, Params.t, t) => t;
@@ -21,7 +27,7 @@ module Expression: {
 };
 module Delete: {
     type t('resultType);
-    let make: (string, KnexTypes.knex((_, _, _, 'resultType))) => t('resultType);
+    let make: (string, Types.knex((_, _, _, 'resultType))) => t('resultType);
 
     let where: (string, t('a)) => t('a);
     let whereParam: (string, Params.t, t('a)) => t('a);
@@ -36,7 +42,7 @@ module Delete: {
 };
 module Insert: {
     type t('a);
-    let make: KnexTypes.knex((_, 'result, _, _)) => t('result);
+    let make: Types.knex((_, 'result, _, _)) => t('result);
 
     let set: (Js.Dict.key, 'a, t('b)) => t('b);
     let into: (string, t('a)) => t('a);
@@ -47,7 +53,7 @@ module Insert: {
 };
 module Select: {
     type t('a);
-    let make: KnexTypes.knex(('a, _, _, _)) => t('a);
+    let make: Types.knex(('a, _, _, _)) => t('a);
 
     let column: (~alias: Js.Dict.key=?, string, t('a)) => t('a);
 
@@ -75,7 +81,7 @@ module Select: {
 };
 module Update: {
     type t('resultType);
-    let make: (string, KnexTypes.knex((_, 'a, _, _))) => t('a);
+    let make: (string, Types.knex((_, 'a, _, _))) => t('a);
 
     let set: (Js.Dict.key, _, t('a)) => t('a);
     let returning: (array(string), t('a)) => t('a);
@@ -132,8 +138,8 @@ type client('resultTypes) =
 
 let make:
     (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?,
-     client('resultType)) => KnexTypes.knex('resultType);
-let destroy: (unit, KnexTypes.knex('a)) => Reduice.Promise.t(unit);
+     client('resultType)) => Types.knex('resultType);
+let destroy: (unit, Types.knex('a)) => Reduice.Promise.t(unit);
 
-let raw: KnexTypes.knex(_) => string => Reduice.Promise.t(Js.Json.t);
-let transaction: (KnexTypes.knex('a), KnexTypes.knex('a) => Reduice.Promise.t('b)) => Reduice.Promise.t('c);
+let raw: Types.knex(_) => string => Reduice.Promise.t(Js.Json.t);
+let transaction: (Types.knex('a), Types.knex('a) => Reduice.Promise.t('b)) => Reduice.Promise.t('c);

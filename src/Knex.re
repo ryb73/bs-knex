@@ -1,3 +1,4 @@
+module Types = { include KnexTypes; };
 module Delete = { include Delete; };
 module Expression = { include Expression; };
 module Insert = { include Insert; };
@@ -9,6 +10,8 @@ module MSSQL = { include MSSQL; };
 module MySQL = { include MySQL; };
 module PostgreSQL = { include PostgreSQL; };
 module SQLite3 = { include SQLite3; };
+
+type t('resultTypes) = Types.knex('resultTypes);
 
 type connection;
 [@bs.obj] external connection:
@@ -34,7 +37,7 @@ let clientToString = (type a, client: client(a)) =>
 
 [@bs.module] external make: opts => Js.Json.t = "knex";
 let make =
-    (type a, ~host=?, ~user=?, ~password=?, ~database=?, client: client(a)): KnexTypes.knex(a) => {
+    (type a, ~host=?, ~user=?, ~password=?, ~database=?, client: client(a)): t(a) => {
         /* Don't make connection object if none of the options are set. knex treats the
         existence of `connection` as enabling connections even if it's empty */
         let connection =
@@ -51,9 +54,9 @@ let make =
         |> Obj.magic;
     };
 
-[@bs.send] external raw: KnexTypes.knex(_) => string => Reduice.Promise.t(Js.Json.t) = "";
+[@bs.send] external raw: t(_) => string => Reduice.Promise.t(Js.Json.t) = "";
 
 [@bs.send] external transaction:
-    KnexTypes.knex('a) => (KnexTypes.knex('a) => Reduice.Promise.t(_)) => Reduice.Promise.t(_) = "";
+    t('a) => (t('a) => Reduice.Promise.t(_)) => Reduice.Promise.t(_) = "";
 
-[@bs.send.pipe: KnexTypes.knex(_)] external destroy: unit => Reduice.Promise.t(unit) = "";
+[@bs.send.pipe: t(_)] external destroy: unit => Reduice.Promise.t(unit) = "";
