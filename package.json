@@ -12,7 +12,8 @@
   },
   "files": [
     "/bsconfig.json",
-    "/src"
+    "/src",
+    "/lib/js/src"
   ],
   "keywords": [
     "bucklescript",
