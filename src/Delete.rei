@@ -10,4 +10,4 @@ let whereEx: (unit => Expression.t, t('a)) => t('a);
 let orWhereEx: (unit => Expression.t, t('a)) => t('a);
 
 let toString: t(_) => string;
-let execute: t('a) => Reduice.Promise.t('a);
+let execute: t('a) => Js.Promise.t('a);

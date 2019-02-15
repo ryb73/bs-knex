@@ -5,8 +5,8 @@ module Make = (M: Builder.Builder) => {
         M.finish(builder)
         |> toString;
 
-    let execute = (builder: M.t('a)): Reduice.Promise.t('a) =>
+    let execute = (builder: M.t('a)): Js.Promise.t('a) =>
         M.finish(builder)
         |> Obj.magic
-        |> Reduice.Promise.resolve;
+        |> Js.Promise.resolve;
 };

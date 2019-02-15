@@ -54,9 +54,9 @@ let make =
         |> Obj.magic;
     };
 
-[@bs.send] external raw: t(_) => string => Reduice.Promise.t(Js.Json.t) = "";
+[@bs.send] external raw: t(_) => string => Js.Promise.t(Js.Json.t) = "";
 
 [@bs.send] external transaction:
-    t('a) => (t('a) => Reduice.Promise.t(_)) => Reduice.Promise.t(_) = "";
+    t('a) => (t('a) => Js.Promise.t(_)) => Js.Promise.t(_) = "";
 
-[@bs.send] external destroy: t(_) => Reduice.Promise.t(unit) = "";
+[@bs.send] external destroy: t(_) => Js.Promise.t(unit) = "";

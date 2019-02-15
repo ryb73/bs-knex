@@ -1,6 +1,5 @@
 {
     "name": "@ryb73/bs-knex",
-    "bs-dependencies": [ "@ryb73/reduice" ],
     "sources": [
         {
             "dir": "src",

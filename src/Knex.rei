@@ -38,7 +38,7 @@ module Delete: {
     let orWhereEx: (unit => Expression.t, t('a)) => t('a);
 
     let toString: t(_) => string;
-    let execute: t('a) => Reduice.Promise.t('a);
+    let execute: t('a) => Js.Promise.t('a);
 };
 module Insert: {
     type t('a);
@@ -49,7 +49,7 @@ module Insert: {
     let returning: (array(string), t('a)) => t('a);
 
     let toString: t(_) => string;
-    let execute: t('a) => Reduice.Promise.t('a);
+    let execute: t('a) => Js.Promise.t('a);
 };
 module Select: {
     type t('a);
@@ -77,7 +77,7 @@ module Select: {
     let orWhereEx: (unit => Expression.t, t('a)) => t('a);
 
     let toString: t(_) => string;
-    let execute: t('a) => Reduice.Promise.t('a);
+    let execute: t('a) => Js.Promise.t('a);
 };
 module Update: {
     type t('resultType);
@@ -95,7 +95,7 @@ module Update: {
     let orWhereEx: (unit => Expression.t, t('a)) => t('a);
 
     let toString: t(_) => string;
-    let execute: t('a) => Reduice.Promise.t('a);
+    let execute: t('a) => Js.Promise.t('a);
 };
 module MSSQL: {
     type resultTypes = (
@@ -139,7 +139,7 @@ type client('resultTypes) =
 let make:
     (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?,
      client('resultType)) => Types.knex('resultType);
-let destroy: Types.knex('a) => Reduice.Promise.t(unit);
+let destroy: Types.knex('a) => Js.Promise.t(unit);
 
-let raw: Types.knex(_) => string => Reduice.Promise.t(Js.Json.t);
-let transaction: (Types.knex('a), Types.knex('a) => Reduice.Promise.t('b)) => Reduice.Promise.t('c);
+let raw: Types.knex(_) => string => Js.Promise.t(Js.Json.t);
+let transaction: (Types.knex('a), Types.knex('a) => Js.Promise.t('b)) => Js.Promise.t('c);
