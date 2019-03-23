@@ -4,7 +4,7 @@
   "description": "BuckleScript bindings for https://www.npmjs.com/package/knex",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "npm run clean && bsb -make-world",
     "watch": "npm run clean && bsb -make-world -w",
     "clean": "rm -rf lib && bsb -clean-world",
@@ -33,5 +33,8 @@
   },
   "dependencies": {
     "knex": "0.16.3"
+  },
+  "devDependencies": {
+    "@glennsl/bs-jest": "^0.4.8"
   }
 }

@@ -1,5 +1,6 @@
 {
     "name": "@ryb73/bs-knex",
+    "bs-dev-dependencies": [ "@glennsl/bs-jest" ],
     "sources": [
         {
             "dir": "src",
@@ -7,7 +8,7 @@
                 [ "Knex" ],
         },
         {
-            "dir": "test",
+            "dir": "__tests__",
             "type": "dev"
         }
     ],
