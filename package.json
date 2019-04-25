@@ -29,10 +29,10 @@
     "url": "git@github.com:ryb73/bs-knex.git"
   },
   "peerDependencies": {
-    "bs-platform": "^4.0.18"
+    "bs-platform": "^5.0.0"
   },
   "dependencies": {
-    "knex": "0.16.3"
+    "knex": "0.16.5"
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.8"
