@@ -3,7 +3,7 @@ cache: yarn
 node_js:
 - '11'
 script:
-- yarn add bs-platform
+- npm i bs-platform --no-save
 - yarn build
 - yarn test
 deploy:
