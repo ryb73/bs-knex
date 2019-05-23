@@ -36,5 +36,8 @@
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.8"
+  },
+  "optionalDependencies": {
+    "pg": "^7.9.0"
   }
 }
