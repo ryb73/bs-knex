@@ -18,8 +18,13 @@ type connection;
     (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?)
     => connection = "";
 
+type pool;
+[@bs.obj] external pool: (~min: int=?, ~max: int=?) => pool = "";
+
 type opts;
-[@bs.obj] external opts: (~connection: connection=?, ~client: string) => opts = "";
+[@bs.obj]
+external opts:
+    (~connection: connection=?, ~pool: pool=?, ~client: string) => opts = "";
 
 type client('resultTypes) =
     | PostgreSQL: client(PostgreSQL.resultTypes)
@@ -37,7 +42,9 @@ let clientToString = (type a, client: client(a)) =>
 
 [@bs.module] external make: opts => Js.Json.t = "knex";
 let make =
-    (type a, ~host=?, ~user=?, ~password=?, ~database=?, client: client(a)): t(a) => {
+    (type a, ~host=?, ~user=?, ~password=?, ~database=?, ~poolMin=?, ~poolMax=?,
+        client: client(a)): t(a) =>
+    {
         /* Don't make connection object if none of the options are set. knex treats the
         existence of `connection` as enabling connections even if it's empty */
         let connection =
@@ -48,6 +55,7 @@ let make =
 
         opts(
             ~connection?,
+            ~pool=pool(~min=?poolMin, ~max=?poolMax),
             ~client=clientToString(client),
         )
         |> make

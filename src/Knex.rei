@@ -138,7 +138,7 @@ type client('resultTypes) =
 
 let make:
     (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?,
-     client('resultType)) => Types.knex('resultType);
+     ~poolMin: int=?, ~poolMax: int=?, client('resultType)) => Types.knex('resultType);
 let destroy: Types.knex('a) => Js.Promise.t(unit);
 
 let raw: Types.knex(_) => string => Js.Promise.t(Js.Json.t);
