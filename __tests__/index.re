@@ -168,6 +168,14 @@ describe("Select", () => {
             |> evaluate({|select * order by "theorder" asc, "id" desc|})
         );
     });
+
+    test("forUpdate", () =>
+        mk()
+        |> column("*")
+        |> from("tbl")
+        |> forUpdate
+        |> evaluate({|select * from "tbl" for update|})
+    );
 });
 
 test("Insert", () => {

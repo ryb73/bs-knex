@@ -78,6 +78,8 @@ module Select: {
 
     let toString: t(_) => string;
     let execute: t('a) => Js.Promise.t('a);
+
+    let forUpdate: t('a) => t('a);
 };
 module Update: {
     type t('resultType);

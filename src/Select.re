@@ -25,7 +25,6 @@ let from = (~alias=?, table) =>
 
 [@bs.send.pipe: t('a)] external groupBy : string => t('a) = "";
 
-
 type order = Ascending | Descending;
 [@bs.send.pipe: t('a)] external orderBy : string => string => t('a) = "orderBy";
 let orderBy = (column, order, select) => {
@@ -35,6 +34,8 @@ let orderBy = (column, order, select) => {
     }
     |> orderBy(column, _, select)
 };
+
+[@bs.send] external forUpdate: t('a) => t('a) = "";
 
 module Builder = {
     type nonrec t('a) = t('a);

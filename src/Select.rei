@@ -24,3 +24,5 @@ let orWhereEx: (unit => Expression.t, t('a)) => t('a);
 
 let toString: t(_) => string;
 let execute: t('a) => Js.Promise.t('a);
+
+let forUpdate: t('a) => t('a);
