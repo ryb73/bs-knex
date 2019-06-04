@@ -68,3 +68,5 @@ let make =
     t('a) => (t('a) => Js.Promise.t(_)) => Js.Promise.t(_) = "";
 
 [@bs.send] external destroy: t(_) => Js.Promise.t(unit) = "";
+
+[@bs.send] external rollback: t(_) => Js.Promise.t(unit) = "";

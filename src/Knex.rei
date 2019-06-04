@@ -142,6 +142,7 @@ let make:
     (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?,
      ~poolMin: int=?, ~poolMax: int=?, client('resultType)) => Types.knex('resultType);
 let destroy: Types.knex('a) => Js.Promise.t(unit);
+let rollback: Types.knex('a) => Js.Promise.t(unit);
 
 let raw: Types.knex(_) => string => Js.Promise.t(Js.Json.t);
 let transaction: (Types.knex('a), Types.knex('a) => Js.Promise.t('b)) => Js.Promise.t('c);
