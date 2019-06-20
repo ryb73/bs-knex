@@ -5,6 +5,7 @@ module Insert = { include Insert; };
 module Params = { include Params; };
 module Select = { include Select; };
 module Update = { include Update; };
+module Raw = { include Raw; };
 
 module MSSQL = { include MSSQL; };
 module MySQL = { include MySQL; };
@@ -62,7 +63,8 @@ let make =
         |> Obj.magic;
     };
 
-[@bs.send] external raw: t(_) => string => Js.Promise.t(Js.Json.t) = "";
+[@bs.send] external raw: (t(_), string, ~params: Params.t=?, unit) => Raw.t = "";
+let raw = (~params=?, knex, query) => raw(knex, query, ~params?, ());
 
 [@bs.send] external transaction:
     t('a) => (t('a) => Js.Promise.t(_)) => Js.Promise.t(_) = "";

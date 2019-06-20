@@ -32,7 +32,7 @@
     "bs-platform": "^5.0.0"
   },
   "dependencies": {
-    "knex": "0.17.2"
+    "knex": "0.17.6"
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.8"

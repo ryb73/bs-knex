@@ -99,6 +99,11 @@ module Update: {
     let toString: t(_) => string;
     let execute: t('a) => Js.Promise.t('a);
 };
+module Raw: {
+    type t;
+    let toString: t => string;
+    let execute: t => Js.Promise.t(Js.Json.t);
+};
 module MSSQL: {
     type resultTypes = (
         /* select */ Js.Json.t,
@@ -144,5 +149,6 @@ let make:
 let destroy: Types.knex('a) => Js.Promise.t(unit);
 let rollback: Types.knex('a) => Js.Promise.t(unit);
 
-let raw: Types.knex(_) => string => Js.Promise.t(Js.Json.t);
+let raw: (~params: Params.t=?, Types.knex('a), string) => Raw.t;
+
 let transaction: (Types.knex('a), Types.knex('a) => Js.Promise.t('b)) => Js.Promise.t('c);
