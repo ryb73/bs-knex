@@ -1,6 +1,6 @@
 {
   "name": "@ryb73/bs-knex",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "BuckleScript bindings for https://www.npmjs.com/package/knex",
   "main": "index.js",
   "scripts": {
