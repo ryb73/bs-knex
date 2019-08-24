@@ -256,6 +256,8 @@ describe("transactions", () => {
 
     let tableName = ref(Uuid.V4.uuidv4());
 
+    afterAllPromise(() => destroy(knex));
+
     beforeEachPromise(() =>
         (?? tableName^)
         |> Knex.raw(~params=_, knex, {|
