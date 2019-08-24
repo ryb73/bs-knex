@@ -6,7 +6,7 @@ type t = array(_any);
 let make = (v) : t => [| _any(v) |];
 
 let bind = (v, bindings) => {
-    Js.Array.push(_any(v), bindings);
+    Js.Array.push(_any(v), bindings) |> ignore;
     bindings;
 };
 

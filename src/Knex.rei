@@ -151,4 +151,5 @@ let rollback: Types.knex('a) => Js.Promise.t(unit);
 
 let raw: (~params: Params.t=?, Types.knex('a), string) => Raw.t;
 
-let transaction: (Types.knex('a), Types.knex('a) => Js.Promise.t('b)) => Js.Promise.t('c);
+let transaction:
+    (Types.knex('a), Types.knex('a) => Js.Promise.t('b)) => Js.Promise.t('b);

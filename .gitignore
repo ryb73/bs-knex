@@ -68,3 +68,7 @@ lib/
 
 # persistent-package-linker
 package-links.json
+
+config/*
+!config/default.*
+!config/test.*

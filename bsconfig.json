@@ -1,11 +1,16 @@
 {
     "name": "@ryb73/bs-knex",
-    "bs-dev-dependencies": [ "@glennsl/bs-jest" ],
+    "bs-dev-dependencies": [
+        "@glennsl/bs-jest",
+        "@ryb73/bs-config",
+        "@ryb73/decco",
+        "@ryb73/prom-ex",
+        "bs-guid",
+    ],
     "sources": [
         {
             "dir": "src",
-            "public":
-                [ "Knex" ],
+            "public": [ "Knex" ],
         },
         {
             "dir": "__tests__",
@@ -13,5 +18,8 @@
         }
     ],
     "refmt": 3,
-    "bsc-flags": [ "-w -10", "-bs-super-errors" ]
+    "ppx-flags": [
+        "@ryb73/decco/ppx/ppx_decco.sh",
+    ],
+    "bsc-flags": [ "-w -105", "-bs-super-errors" ]
 }
