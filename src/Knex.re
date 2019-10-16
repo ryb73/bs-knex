@@ -16,7 +16,7 @@ type t('resultTypes) = Types.knex('resultTypes);
 
 type connection;
 [@bs.obj] external connection:
-    (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?)
+    (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?, ~ssl: bool=?)
     => connection = "";
 
 type pool;
@@ -43,7 +43,7 @@ let clientToString = (type a, client: client(a)) =>
 
 [@bs.module] external make: opts => Js.Json.t = "knex";
 let make =
-    (type a, ~host=?, ~user=?, ~password=?, ~database=?, ~poolMin=?, ~poolMax=?,
+    (type a, ~host=?, ~user=?, ~password=?, ~database=?, ~ssl=?, ~poolMin=?, ~poolMax=?,
         client: client(a)): t(a) =>
     {
         /* Don't make connection object if none of the options are set. knex treats the
@@ -51,7 +51,7 @@ let make =
         let connection =
             [| host, user, password, database |]
             |> Js.Array.some((!==)(None))
-            ? Some(connection(~host?, ~user?, ~password?, ~database?))
+            ? Some(connection(~host?, ~user?, ~password?, ~database?, ~ssl?))
             : None;
 
         opts(
