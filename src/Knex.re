@@ -50,14 +50,17 @@ let make =
         ~poolMin=?, ~poolMax=?, client: client(a)): t(a) =>
     {
         /* Don't make connection object if none of the options are set. knex treats the
-        existence of `connection` as enabling connections even if it's empty */
-        let connection =
-            [| host, user, password, database, sslCa, sslCert, sslKey |]
+        existence of `connection` as enabling connections even if it's empty. Similar for ssl */
+        let ssl =
+            [| sslCa, sslCert, sslKey |]
             |> Js.Array.some((!==)(None))
-            ? Some(connection(
-                ~host?, ~user?, ~password?, ~database?,
-                ~ssl=ssl(~ca=?sslCa, ~cert=?sslCert, ~key=?sslKey)
-            ))
+            ? Some(ssl(~ca=?sslCa, ~cert=?sslCert, ~key=?sslKey))
+            : None;
+
+        let connection =
+            [| host, user, password, database |]
+            |> Js.Array.some((!==)(None))
+            ? Some(connection(~host?, ~user?, ~password?, ~database?, ~ssl?))
             : None;
 
         opts(
