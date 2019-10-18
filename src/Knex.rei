@@ -144,7 +144,8 @@ type client('resultTypes) =
     | MSSQL: client(MSSQL.resultTypes);
 
 let make:
-    (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?, ~ssl: bool=?,
+    (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?,
+     ~sslCa: string=?, ~sslCert: string=?, ~sslKey: string=?,
      ~poolMin: int=?, ~poolMax: int=?, client('resultType)) => Types.knex('resultType);
 let destroy: Types.knex('a) => Js.Promise.t(unit);
 let rollback: Types.knex('a) => Js.Promise.t(unit);

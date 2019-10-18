@@ -14,9 +14,12 @@ module SQLite3 = { include SQLite3; };
 
 type t('resultTypes) = Types.knex('resultTypes);
 
+type ssl;
+[@bs.obj] external ssl: (~ca: string=?, ~cert: string=?, ~key: string=?) => ssl = "";
+
 type connection;
 [@bs.obj] external connection:
-    (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?, ~ssl: bool=?)
+    (~host: string=?, ~user: string=?, ~password: string=?, ~database: string=?, ~ssl: ssl=?)
     => connection = "";
 
 type pool;
@@ -43,15 +46,18 @@ let clientToString = (type a, client: client(a)) =>
 
 [@bs.module] external make: opts => Js.Json.t = "knex";
 let make =
-    (type a, ~host=?, ~user=?, ~password=?, ~database=?, ~ssl=?, ~poolMin=?, ~poolMax=?,
-        client: client(a)): t(a) =>
+    (type a, ~host=?, ~user=?, ~password=?, ~database=?, ~sslCa=?, ~sslCert=?, ~sslKey=?,
+        ~poolMin=?, ~poolMax=?, client: client(a)): t(a) =>
     {
         /* Don't make connection object if none of the options are set. knex treats the
         existence of `connection` as enabling connections even if it's empty */
         let connection =
-            [| host, user, password, database |]
+            [| host, user, password, database, sslCa, sslCert, sslKey |]
             |> Js.Array.some((!==)(None))
-            ? Some(connection(~host?, ~user?, ~password?, ~database?, ~ssl?))
+            ? Some(connection(
+                ~host?, ~user?, ~password?, ~database?,
+                ~ssl=ssl(~ca=?sslCa, ~cert=?sslCert, ~key=?sslKey)
+            ))
             : None;
 
         opts(
