@@ -3,9 +3,9 @@
     "bs-dev-dependencies": [
         "@glennsl/bs-jest",
         "@ryb73/bs-config",
-        "@ryb73/decco",
         "@ryb73/prom-ex",
         "bs-guid",
+        "decco",
     ],
     "sources": [
         {
@@ -19,7 +19,10 @@
     ],
     "refmt": 3,
     "ppx-flags": [
-        "@ryb73/decco/ppx/ppx_decco.sh",
+        "decco/ppx",
     ],
-    "bsc-flags": [ "-w -105", "-bs-super-errors" ]
+    "warnings": {
+        "number": "+A-4-9-40-42-105",
+    },
+    "bsc-flags": [ "-bs-super-errors" ]
 }
