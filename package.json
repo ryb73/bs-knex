@@ -1,6 +1,6 @@
 {
   "name": "@ryb73/bs-knex",
-  "version": "0.4.5",
+  "version": "0.5.0-bs6.0",
   "description": "BuckleScript bindings for https://www.npmjs.com/package/knex",
   "main": "index.js",
   "scripts": {
@@ -12,8 +12,7 @@
   },
   "files": [
     "/bsconfig.json",
-    "/src",
-    "/lib/js/src"
+    "/src"
   ],
   "keywords": [
     "bucklescript",
@@ -23,24 +22,23 @@
   ],
   "license": "MIT",
   "author": "Ryan Biwer",
-  "_": [],
   "repository": {
     "type": "git",
     "url": "git@github.com:ryb73/bs-knex.git"
   },
   "peerDependencies": {
-    "bs-platform": "^5.0.0"
+    "bs-platform": "^6.0.1"
   },
   "dependencies": {
     "knex": "0.19.5"
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.9",
-    "@ryb73/bs-config": "^0.0.5",
-    "@ryb73/decco": "^0.1.0",
-    "@ryb73/prom-ex": "^0.3.1",
+    "@ryb73/bs-config": "^0.0.6",
+    "@ryb73/prom-ex": "^1.0.1",
     "bs-guid": "^1.0.1",
-    "bs-platform": "^5.0.6"
+    "bs-platform": "^6.0.1",
+    "decco": "^1.0.0"
   },
   "optionalDependencies": {
     "pg": "^7.12.1"
