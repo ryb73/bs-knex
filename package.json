@@ -27,18 +27,18 @@
     "url": "git@github.com:ryb73/bs-knex.git"
   },
   "peerDependencies": {
-    "bs-platform": "^6.0.1"
+    "bs-platform": "^6.0.0 || ^7.0.0"
   },
   "dependencies": {
-    "knex": "0.19.5"
+    "knex": "0.20.4"
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.9",
     "@ryb73/bs-config": "^0.0.6",
     "@ryb73/prom-ex": "^1.0.1",
     "bs-guid": "^1.0.1",
-    "bs-platform": "^6.0.1",
-    "decco": "^1.0.0"
+    "bs-platform": "^7.0.1",
+    "decco": "^1.1.0"
   },
   "optionalDependencies": {
     "pg": "^7.12.1"

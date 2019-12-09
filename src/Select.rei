@@ -22,6 +22,8 @@ let orWhereParam: (string, Params.t, t('a)) => t('a);
 let whereEx: (unit => Expression.t, t('a)) => t('a);
 let orWhereEx: (unit => Expression.t, t('a)) => t('a);
 
+let limit: (int, t('a)) => t('a);
+
 let toString: t(_) => string;
 let execute: t('a) => Js.Promise.t('a);
 

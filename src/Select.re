@@ -21,6 +21,8 @@ let from = (~alias=?, table) =>
         | _ => from(table)
     };
 
+[@bs.send.pipe: t('a)] external limit: int => t('a) = "";
+
 [@bs.send.pipe: t('a)] external innerJoin : string => string => string => string => t('a) = "";
 
 [@bs.send.pipe: t('a)] external groupBy : string => t('a) = "";
