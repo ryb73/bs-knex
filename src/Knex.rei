@@ -62,6 +62,11 @@ module Select: {
 
     let from: (~alias: Js.Dict.key=?, string, t('a)) => t('a);
     let innerJoin: (string, string, string, string, t('a)) => t('a);
+    let leftJoin: (string, string, string, string, t('a)) => t('a);
+    let leftOuterJoin: (string, string, string, string, t('a)) => t('a);
+    let rightJoin: (string, string, string, string, t('a)) => t('a);
+    let rightOuterJoin: (string, string, string, string, t('a)) => t('a);
+    let fullOuterJoin: (string, string, string, string, t('a)) => t('a);
 
     let groupBy: (string, t('a)) => t('a);
 

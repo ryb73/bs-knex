@@ -77,6 +77,41 @@ describe("from", () => {
         |> innerJoin("tbl2 as t2", "t2.id", "=", "t.id")
         |> evaluate({|select * from "tbl" as "t" inner join "tbl2" as "t2" on "t2"."id" = "t"."id"|})
     );
+
+    test("leftJoin", () =>
+        mk()
+        |> from("tbl")
+        |> leftJoin("tbl2", "tbl2.id", "=", "tbl.id")
+        |> evaluate({|select * from "tbl" left join "tbl2" on "tbl2"."id" = "tbl"."id"|})
+    );
+
+    test("leftOuterJoin", () =>
+        mk()
+        |> from("tbl")
+        |> leftOuterJoin("tbl2", "tbl2.id", "=", "tbl.id")
+        |> evaluate({|select * from "tbl" left outer join "tbl2" on "tbl2"."id" = "tbl"."id"|})
+    );
+
+    test("rightJoin", () =>
+        mk()
+        |> from("tbl")
+        |> rightJoin("tbl2", "tbl2.id", "=", "tbl.id")
+        |> evaluate({|select * from "tbl" right join "tbl2" on "tbl2"."id" = "tbl"."id"|})
+    );
+
+    test("rightOuterJoin", () =>
+        mk()
+        |> from("tbl")
+        |> rightOuterJoin("tbl2", "tbl2.id", "=", "tbl.id")
+        |> evaluate({|select * from "tbl" right outer join "tbl2" on "tbl2"."id" = "tbl"."id"|})
+    );
+
+    test("fullOuterJoin", () =>
+        mk()
+        |> from("tbl")
+        |> fullOuterJoin("tbl2", "tbl2.id", "=", "tbl.id")
+        |> evaluate({|select * from "tbl" full outer join "tbl2" on "tbl2"."id" = "tbl"."id"|})
+    );
 });
 
 describe("where", () => {

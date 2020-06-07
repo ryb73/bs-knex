@@ -24,6 +24,11 @@ let from = (~alias=?, table) =>
 [@bs.send.pipe: t('a)] external limit: int => t('a) = "";
 
 [@bs.send.pipe: t('a)] external innerJoin : string => string => string => string => t('a) = "";
+[@bs.send.pipe: t('a)] external leftJoin : string => string => string => string => t('a) = "";
+[@bs.send.pipe: t('a)] external leftOuterJoin : string => string => string => string => t('a) = "";
+[@bs.send.pipe: t('a)] external rightJoin : string => string => string => string => t('a) = "";
+[@bs.send.pipe: t('a)] external rightOuterJoin : string => string => string => string => t('a) = "";
+[@bs.send.pipe: t('a)] external fullOuterJoin : string => string => string => string => t('a) = "";
 
 [@bs.send.pipe: t('a)] external groupBy : string => t('a) = "";
 
