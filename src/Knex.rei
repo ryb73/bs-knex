@@ -67,6 +67,7 @@ module Select: {
     let rightJoin: (string, string, string, string, t('a)) => t('a);
     let rightOuterJoin: (string, string, string, string, t('a)) => t('a);
     let fullOuterJoin: (string, string, string, string, t('a)) => t('a);
+    let joinRaw : string => t('a) => t('a);
 
     let groupBy: (string, t('a)) => t('a);
 
