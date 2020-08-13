@@ -112,6 +112,13 @@ describe("from", () => {
         |> fullOuterJoin("tbl2", "tbl2.id", "=", "tbl.id")
         |> evaluate({|select * from "tbl" full outer join "tbl2" on "tbl2"."id" = "tbl"."id"|})
     );
+
+    test("rawJoin", () =>
+        mk()
+        |> from("tbl")
+        |> joinRaw("inner join tbl2 on tbl2.id = tbl.id")
+        |> evaluate({|select * from "tbl" inner join tbl2 on tbl2.id = tbl.id|})
+    );
 });
 
 describe("where", () => {
