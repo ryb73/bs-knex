@@ -29,6 +29,7 @@ let from = (~alias=?, table) =>
 [@bs.send.pipe: t('a)] external rightJoin : string => string => string => string => t('a) = "";
 [@bs.send.pipe: t('a)] external rightOuterJoin : string => string => string => string => t('a) = "";
 [@bs.send.pipe: t('a)] external fullOuterJoin : string => string => string => string => t('a) = "";
+[@bs.send.pipe: t('a)] external joinRaw : string => t('a) = "";
 
 [@bs.send.pipe: t('a)] external groupBy : string => t('a) = "";
 
