@@ -72,3 +72,9 @@ package-links.json
 config/*
 !config/default.*
 !config/test.*
+
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions

@@ -7,8 +7,7 @@
     "test": "jest",
     "build": "npm run clean && bsb -make-world",
     "watch": "npm run clean && bsb -make-world -w",
-    "clean": "rm -rf lib && bsb -clean-world",
-    "postinstall": "[ ! -f package-links.json ] || ppl link-file"
+    "clean": "rm -rf lib && bsb -clean-world"
   },
   "files": [
     "/bsconfig.json",
@@ -27,18 +26,19 @@
     "url": "git@github.com:ryb73/bs-knex.git"
   },
   "peerDependencies": {
-    "bs-platform": "^6.0.0 || ^7.0.0"
+    "bs-platform": "6 || 7 || 8"
   },
   "dependencies": {
     "knex": "0.20.4"
   },
   "devDependencies": {
-    "@glennsl/bs-jest": "^0.4.9",
-    "@ryb73/bs-config": "^0.0.6",
+    "@glennsl/bs-jest": "^0.6.0",
+    "@ryb73/bs-config": "0.0.*",
     "@ryb73/prom-ex": "^1.0.1",
     "bs-guid": "^1.0.1",
-    "bs-platform": "^7.0.1",
-    "decco": "^1.1.0"
+    "bs-platform": "8",
+    "decco": "^1.1.0",
+    "jest": "^26.6.3"
   },
   "optionalDependencies": {
     "pg": "^7.12.1"
